@@ -10,7 +10,7 @@ public class StreckeTest {
 	public void parameterMatchestest() {
 		Strecke eins = new Strecke(-1);
 		System.out.println("Ergebnis ist: "+ eins.streckeInStrichen(-1));
-	System.out.println("hihihii");
+	
 	
 	}
 
