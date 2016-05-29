@@ -1,5 +1,6 @@
 package eisenbahnstrecke;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,73 +9,73 @@ public class Block {
 	 * Liste erstellen um die züge einzunehmen
 	 */
 	List<String> list = new ArrayList<>();
+=======
+>>>>>>> e2bb8365ff28b70b262baca064c409f2a5845e57
 
-	/**
-	 * Klasse Strecke in Block initialisiert
-	 */
+public class Block {
 	Strecke rode = new Strecke(0);
 
-	/**
-	 * Variablen signal, die strecke deklariert
-	 */
 	String signal;
-	int strecke;
-
-	/**
-	 * @return strecke
-	 */
-	public int getStrecke() {
-		return strecke;
-	}
-
-	/**
-	 * @param newStrecke
-	 *            die zweite Strecke die neben der ersten eingegeben wird
-	 * @return die zweite soeben eingegebene Strecke
-	 */
-	public int setStrecke(int newStrecke) {
-		return strecke = newStrecke;
-	}
-
-	/**
-	 * @return signal Rot
-	 */
-	String setSignalRot() {
-		return setSignalRot();
-	}
-
-	/**
-	 * @return signal Gruen
-	 */
-	String setSignalGruen() {
-		return setSignalGruen();
-	}
-
-	/**
-	 * Die Strecke in Strichen ausgeben
-	 */
-	public String toString(int strecke) {
-		String block = ("|") + rode.streckeInStrichen(strecke);
-		return block;
+	int strecke1;
+	
+	Block( int strecke1){
+		//this.signal = signal;
+		this.strecke1 = strecke1;
+		
 	}
 	
-	public int checkPosition(){
-		int position = 0;
-		for(int i = 0; i <= strecke; i++){
-			return position++;
+	String setSignalRot(){
+		return setSignalRot();
+	}
+	
+	String setSignalGruen(){
+		return setSignalGruen();
+	}
+	
+	//Strecke streckenlaenge
+	public String createBlock(int strecke1){
+		String block = ("|")+rode.streckeInStrichen(strecke1) ;
+		return block;
+	}
+	/*
+	public String checkSignal( Block strecke2){
+		while(signal.startsWith("|")){
+			return checkFreeRunway();
+		}
+		return signal;
+	}
+	*/
+	/*
+	public String checkFreeRunway( ){
+		String a;
+		
+		if(signal.startsWith("|")){
+			if(){
+				
+			}
 		}
 	}
+	*/
+		
+		
+		
 
-	/**
-	 * Signale überprüfen
-	 * @return
-	 */
-	public String checkSignal() {
-		if (signal.startsWith("_")) {
-			return setSignalGruen();
-		} else {
-			return setSignalRot();
-		}
+	
+	
+	/*
+	public String zugEntersBlock(){
+
 	}
-
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
