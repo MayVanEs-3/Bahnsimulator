@@ -1,6 +1,6 @@
 package eisenbahnstrecke;
 
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +9,9 @@ public class Block {
 	 * Liste erstellen um die züge einzunehmen
 	 */
 	List<String> list = new ArrayList<>();
-=======
->>>>>>> e2bb8365ff28b70b262baca064c409f2a5845e57
 
-public class Block {
+
+
 	Strecke rode = new Strecke(0);
 
 	String signal;
