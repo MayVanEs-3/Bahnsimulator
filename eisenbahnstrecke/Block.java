@@ -1,6 +1,13 @@
 package eisenbahnstrecke;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Block {
+	/**
+	 * Liste erstellen um die züge einzunehmen
+	 */
+	List<String> list = new ArrayList<>();
 
 	/**
 	 * Klasse Strecke in Block initialisiert

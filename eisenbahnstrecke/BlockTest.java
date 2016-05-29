@@ -9,10 +9,10 @@ public class BlockTest {
 	@Test
 	public void test() {
 		Block block = new Block();
-		System.out.print("Block: " + block.createBlock(1));
-		System.out.print(block.createBlock(2));
-		System.out.print(block.createBlock(3));
-		System.out.print(block.createBlock(4));
+		System.out.print("Block: " + block.toString(1));
+		System.out.print(block.toString(2));
+		System.out.print(block.toString(3));
+		System.out.print(block.toString(4));
 	}
 
 }
