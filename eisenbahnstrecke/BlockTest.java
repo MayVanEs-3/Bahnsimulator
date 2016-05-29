@@ -8,7 +8,7 @@ public class BlockTest {
 
 	@Test
 	public void test() {
-		Block block = new Block(0);
+		Block block = new Block();
 		System.out.print("Block: " + block.createBlock(1));
 		System.out.print(block.createBlock(2));
 		System.out.print(block.createBlock(3));

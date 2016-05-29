@@ -1,70 +1,73 @@
 package eisenbahnstrecke;
 
-
 public class Block {
+
+	/**
+	 * Klasse Strecke in Block initialisiert
+	 */
 	Strecke rode = new Strecke(0);
 
+	/**
+	 * Variablen signal, die strecke deklariert
+	 */
 	String signal;
-	int strecke1;
-	
-	Block( int strecke1){
-		//this.signal = signal;
-		this.strecke1 = strecke1;
-		
+	int strecke;
+
+	/**
+	 * @return strecke
+	 */
+	public int getStrecke() {
+		return strecke;
 	}
-	
-	String setSignalRot(){
+
+	/**
+	 * @param newStrecke
+	 *            die zweite Strecke die neben der ersten eingegeben wird
+	 * @return die zweite soeben eingegebene Strecke
+	 */
+	public int setStrecke(int newStrecke) {
+		return strecke = newStrecke;
+	}
+
+	/**
+	 * @return signal Rot
+	 */
+	String setSignalRot() {
 		return setSignalRot();
 	}
-	
-	String setSignalGruen(){
+
+	/**
+	 * @return signal Gruen
+	 */
+	String setSignalGruen() {
 		return setSignalGruen();
 	}
-	
-	//Strecke streckenlaenge
-	public String createBlock(int strecke1){
-		String block = ("|")+rode.streckeInStrichen(strecke1) ;
+
+	/**
+	 * Die Strecke in Strichen ausgeben
+	 */
+	public String toString(int strecke) {
+		String block = ("|") + rode.streckeInStrichen(strecke);
 		return block;
 	}
-	/*
-	public String checkSignal( Block strecke2){
-		while(signal.startsWith("|")){
-			return checkFreeRunway();
-		}
-		return signal;
-	}
-	*/
-	/*
-	public String checkFreeRunway( ){
-		String a;
-		
-		if(signal.startsWith("|")){
-			if(){
-				
-			}
+	
+	public int checkPosition(){
+		int position = 0;
+		for(int i = 0; i <= strecke; i++){
+			return position++;
 		}
 	}
-	*/
-		
-		
-		
 
-	
-	
-	/*
-	public String zugEntersBlock(){
-
+	/**
+	 * Signale überprüfen
+	 * @return
+	 */
+	public String checkSignal() {
+		if (signal.startsWith("_")) {
+			return setSignalGruen();
+		} else {
+			return setSignalRot();
+		}
 	}
-	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
