@@ -4,77 +4,95 @@ package eisenbahnstrecke;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class Block {
+	
+	private boolean isUsed;
+	private int begin;
+	private int end;
+	private int length;
+	private Strecke track;
+	
+
 	/**
-	 * Liste erstellen um die züge einzunehmen
+	 * Züge die sich auf den Block befinden
 	 */
-	List<String> list = new ArrayList<>();
-
-
-
-	Strecke rode = new Strecke(0);
-
-	String signal;
-	int strecke1;
+	List<Zug> trainList = new ArrayList<>();
 	
-	Block( int strecke1){
-		//this.signal = signal;
-		this.strecke1 = strecke1;
-		
+	/**
+	 *train enters block, the signal setUsed appears, which stands for the Redlight
+	 */
+	void join(Zug zug){
+		trainList.add(zug);
+		setUsed();
 	}
 	
-	String setSignalRot(){
-		return setSignalRot();
-	}
-	
-	String setSignalGruen(){
-		return setSignalGruen();
-	}
-	
-	//Strecke streckenlaenge
-	public String createBlock(int strecke1){
-		String block = ("|")+rode.streckeInStrichen(strecke1) ;
-		return block;
-	}
-	/*
-	public String checkSignal( Block strecke2){
-		while(signal.startsWith("|")){
-			return checkFreeRunway();
-		}
-		return signal;
-	}
-	*/
-	/*
-	public String checkFreeRunway( ){
-		String a;
-		
-		if(signal.startsWith("|")){
-			if(){
-				
-			}
+	/**
+	 *train leaves block, the signal setUnused appears, which stands for the Greenlight
+	 */
+	void quit(Zug zug){
+		trainList.remove(zug);
+		if(getTrainList().isEmpty()){
+			setUnused();
 		}
 	}
-	*/
-		
-		
-		
-
-	
-	
-	/*
-	public String zugEntersBlock(){
-
+	void hasNextBlockATrain(Zug train){
+		 train.getBlock().setUnused();
 	}
-	*/
+
+	void lastBlockATrain(Zug train){
+		train.getBlock().setUsed();
+	}
 	
+	 Block move(Zug train) {
+		quit(train);
+		notifyAll();
+		hasNextBlockATrain(train);
+		join(train);
+		return null;
+	}
+	/**
+	 */
+	public void add(Zug train) {
+		getTrainList().add(train);
+		setUsed();
+	}
 	
+	public List<Zug> getTrainList() {
+		return trainList;
+	}
+
+	Block(int length){
+		this.length = length;
+	}
+	/**
+	 * Red
+	 */
+	public void setUsed(){
+		isUsed = true;
+	}
+	/**
+	 * Green
+	 */
+	public void setUnused(){
+		isUsed = false;
+	}
 	
+	public int getbegin(){
+		return begin;
+	}
 	
+	public int getend(){
+		return end;
+	}
 	
-	
-	
-	
-	
-	
+	public int getLength() {
+		return length;
+	}
+
+	public void addTrain(Zug train) {
+		trainList.add(train);
+	}
 	
 }
