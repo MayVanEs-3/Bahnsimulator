@@ -1,84 +1,170 @@
 package eisenbahnstrecke;
-
+/*
+ * Als Thread wäre besser, weil wir dann die Objekte griffbereit 
+ * haben zum Stoppen der Threads. 
+ */
 public class Zug extends Thread {
-
 	/**
 	 * Variablen deklaration
 	 */
-	String name;
-	int speed; // km pro sekunde
-	int timeProKm;
-	int position;
-	Strecke route;
-	Block block;
+	private int position;
+	private int geschwindigkeit;
+	private Strecke strecke;
+	private Block block;
+	private boolean hasCollidated = false;
 
 	/**
 	 * Konstruktor
 	 */
-	Zug(String name, int speed) {
-		this.name = name;
-		this.speed = speed;
-		this.timeProKm = 1000 / speed;
+	public Zug(char name, int geschwindigkeit) {
+		super.setName(Character.toString(name));
+		this.setGeschwindigkeit(geschwindigkeit);
 	}
 
-	public Strecke getroute() {
-		return route;
+	/**
+	 * run Methode , bedingungen gestellt wie sich die Methode verhält
+	 */
+	@Override
+	public void run() {
+		try {
+			while (getPosition() <= getStrecke().getLength() && !interrupted()) {
+				// train is at end of block
+				if (getPosition() == getBlock().getEndPos()) {
+					// leave it is the last block
+					if(!getBlock().hasNext()) {
+						synchronized (getBlock()) {
+							getBlock().leave(this);
+							getBlock().notifyAll();
+						}
+						show();
+						return;
+					}
+					
+					// wait until next block is free
+					while (getBlock().getNext().isBlocked()) {
+						synchronized (getBlock().getNext()) {
+							getBlock().getNext().wait();
+						}
+					}
+					synchronized (getStrecke()) {
+						getStrecke().moveTo(this, getBlock());
+					}
+				}
+				position++;
+				
+				// checks if there is a collision with a other train
+				synchronized (getBlock()) {
+					checkCollision();
+				}
+				
+				show();
+				Thread.sleep(getMilliseconds());
+			}
+		} catch (InterruptedException e) {
+			// TODO: nothing....
+		} catch (SimulationException e) {
+			System.out.println("Kollision: " + getBlock().getTrainsAt(getPosition()));
+		}
+	}
+	/**
+	 * strecke ist synchronized weil keiner Syso noch dazu benutzen kann
+	 */
+	private void show() {
+		// strecke is synchronized because nobody can use the syso too
+		synchronized (getStrecke()) {
+			System.out.println(getStrecke());
+		}
 	}
 
-	void setroute(Strecke s) {
-		route = s;
+	/**
+	 * es wird geprüft ob eine kollision stattfindet
+	 * @throws SimulationException
+	 */
+	void checkCollision() throws SimulationException {
+		for (Zug z : getBlock().getTrains()) {
+			if (this != z && getPosition() == z.getPosition()) {
+				// is changeable because not all is needed
+				z.interrupt();
+				z.collidate();
+				collidate();
+				throw new SimulationException();
+			}
+		}
 	}
 
-	public Block getBlock() {
-		return block;
+	/**
+	 * @return berechnung eines feldes
+	 */
+	private int getMilliseconds() {
+		return 1000 / getGeschwindigkeit();
 	}
 
-	public void setBlock(Block block) {
-		this.block = block;
+	/**
+	 * @return die geschwindigkeit
+	 */
+	int getGeschwindigkeit() {
+		return geschwindigkeit;
 	}
 
-	public String toString() {
-		return name;
+	void setGeschwindigkeit(int geschwindigkeit) {
+		this.geschwindigkeit = geschwindigkeit;
 	}
-
-	public int getspeed() {
-		return speed;
-	}
-
-	public void setspeed(int speed) {
-		this.speed = speed;
-	}
-
-	public int getPosition() {
+	/**
+	 * Gibt die position des zuges auf der strecke.
+	 * @return position des zuges 
+	 */
+	int getPosition() {
 		return position;
 	}
 
-	public void setPosition(int position) {
+	/**
+	 * Setzt die position des zuges.
+	 * @param position des zuges
+	 */
+	void setPosition(int position) {
 		this.position = position;
 	}
 
-	/*
-	public void run() {
-		while (route.getRouteLength() > position) {
-			position = position + speed;
-		}
-		if (getPosition() == getBlock().getend()) {
-			while (getBlock().hasNextBlockATrain().isUsed()) {
-				 getBlock().hasNextBlockATrain().sleep(timeProKm);
-				}
-			}
-		//setBlock(getBlock().move(this));
-	
-		System.out.println(getroute());
-		position++;
-		Thread.sleep(timeProKm);
-	
-		synchronized (getBlock()) {
-			getBlock().quit(this);
-			getBlock().notifyAll();
-		
-		}
-
+	/**
+	 * 
+	 * @return strecke
+	 */
+	Strecke getStrecke() {
+		return strecke;
 	}
-	*/
+
+	void setStrecke(Strecke strecke) {
+		this.strecke = strecke;
+	}
+
+	/**
+	 * 
+	 * @return block
+	 */
+	Block getBlock() {
+		return block;
+	}
+
+	/**
+	 * 
+	 * @param block durch neuen block ersetzen
+	 */
+	void setBlock(Block block) {
+		this.block = block;
+	}
+
+	/**
+	 * 
+	 * @return hasCollidated
+	 */
+	boolean hasCollidated() {
+		return hasCollidated;
+	}
+
+	/**
+	 * wenn es kollidiert dann gib tru zurück
+	 */
+	void collidate() {
+		this.hasCollidated = true;
+	}
 }

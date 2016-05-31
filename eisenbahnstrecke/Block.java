@@ -1,128 +1,202 @@
 package eisenbahnstrecke;
-
-
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Block {
-	
 	/**
-	 * Variablen deklariert
+	 * Variablen deklaration
 	 */
-	private boolean isUsed;
-	private int begin;
-	private int end;
 	private int length;
-	private Strecke track;
-	
-
-	/**
-	 * trainlist mit Zügen die sich in dem Block befinden
-	 */
-	List<Zug> trainList = new ArrayList<>();
+	private Signal signal = Signal.GREEN;
+	private int positionOfSection;
 	
 	/**
-	 *train betritt block, signal schlägt auf "Rot", hier setUsed
+	 * Verweise
 	 */
-	void join(Zug train){
-		trainList.add(train);
-		setUsed();
+	private Strecke section;
+	private Block next;
+	private ArrayList<Zug> trains = new ArrayList<>();
+	
+	/**
+	 * Anfang und ende des blockes auf der strecke
+	 */
+	private int start;
+	private int end;
+ 
+	/**
+	 * Konstruktor1
+	 */
+	public Block(int laenge) {
+		this.length = laenge;
 	}
 	
 	/**
-	 *train verlässt block, signal schlägt auf "Grün", hier setUnused
+	 * Konstruktor2
+	 * @param section- Strecke
+	 * @param length- länge
+	 * @param position- position
 	 */
-	void quit(Zug train){
-		trainList.remove(train);
-		if(getTrainList().isEmpty()){
-			setUnused();
+	public Block(Strecke section, int length, int position) {
+		this.length = length;
+		this.positionOfSection = position;
+		this.section = section;
+		// define the range
+		this.start = getSection().getFirstPositionOf(this);
+		this.end = getSection().getLastPosition(this);
+	}
+
+	/**
+	 * Train in die getTrainsliste aufnehmen
+	 * und signal auf rot schalten
+	 */
+	void enter(Zug train) {
+		getTrains().add(train);
+		signal = Signal.RED;
+	}
+	
+	/**
+	 * Aus der liste train entfernen und im näcksten schritt bedingung stellen 
+	 * wenn die liste leer ist dann signal auf grün schalten
+	 */
+	void leave(Zug train) {
+		synchronized (this) {
+			getTrains().remove(train);
+			if(getTrains().isEmpty()) {
+				signal = Signal.GREEN;
+			}
 		}
 	}
+	
 	/**
-	 * !!!!!!!!!!!!!!!!!noch am lösen!!!! 
-	 * @param train
+	 * Wenn signal grün ist dann _ ausgeben ansonsten |
 	 */
-	void hasNextBlockATrain(Zug train){
-		 train.getBlock().setUnused();
-	}
-
-	void haslastBlockATrain(Zug train){
-		train.getBlock().setUsed();
+	private String getSign() {
+		if(getSignal() == Signal.GREEN) {
+			return "_";
+		} else {
+			return "|";
+		}
 	}
 	
 	/**
-	 * zug verlässt ein block, abfrage ob sich im vorletzten block sich ein Zug befindet
-	 * wenn ja soll der weiterfahren, ansonsten
-	 * return hat der näckste block ein zug
-	 */
-	/*
-	 synchronized Block move(Zug train) {
-		quit(train);
-		notifyAll();
-		haslastBlockATrain(train);
-		join(train);
-		return hasNextBlockATrain(train);
-	}
-	*/
-	/**
-	 * zug einnehmen in der liste
-	 */
-	public void add(Zug train) {
-		getTrainList().add(train);
-		setUsed();
-	}
-	
-	public List<Zug> getTrainList() {
-		return trainList;
-	}
-	
-	/**
-	 * @param Konstruktor für die länge
-	 */
-	Block(int length){
-		this.length = length;
+	 *  /
+	  * @return stellt Kollision dar zwichen zwei züge
+	  * wenn mehr als ein zug an der gleichen position ist dann 
+	  * zeige, dass sie Kollidieren
+	  * 
+	  */
+	String getTrainsAt(int posInSect) {
+		String result = "";
+		int counter = 0;
+		for(Zug train : getTrains()) {
+			if(train.getPosition() == posInSect) {
+				result += train.getName();
+				counter++;
+			}
+		}
+		if(counter > 1) {
+			result = "(" + result + ")";
+		}
+		if(counter == 0) {
+			return "-";
+		}
+		return result;
 	}
 	
 	/**
-	 * Strecke wird benutzt, Ampel ist auf "Rot", gibt true zurück
+	 * ToStrinng methode
 	 */
-	public void setUsed(){
-		isUsed = true;
+	@Override
+	public String toString() {
+		String result = getSign();
+		for(int pos = getStartPos(); pos <= getEndPos(); pos++) {
+			result += getTrainsAt(pos);
+		}
+		return result;
 	}
 	
 	/**
-	 * Strecke wird nicht mehr benutzt, Ampel ist auf "Grün", gibt true zurück
+	 * wenn signal gleich rot ist dann gebe true aus ansonsten
+	 * false
 	 */
-	public void setUnused(){
-		isUsed = false;
+	boolean isBlocked() {
+		if(getSignal() == Signal.RED) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
-	 * @return anfang des blockes
+	 * @return the length
 	 */
-	public int getbegin(){
-		return begin;
-	}
-	
-	/**
-	 * @return ende des blockes
-	 */
-	public int getend(){
-		return end;
-	}
-	
-	/**
-	 * @return länge des Blockes
-	 */
-	public int getLength() {
+	int getLength() {
 		return length;
 	}
-	
+
 	/**
-	 * @param train in die trainliste hinzufügen
+	 * Signal
 	 */
-	public void addTrain(Zug train) {
-		trainList.add(train);
+	Signal getSignal() {
+		return signal;
+	}
+
+	/**
+	 * @return die position
+	 */
+	int getPositionOfSection() {
+		return positionOfSection;
 	}
 	
+	/**
+	 * @return die züge
+	 */
+	ArrayList<Zug> getTrains() {
+		return trains;
+	}
+	
+	/**
+	 * @return die Strecke strecke
+	 */
+	Strecke getSection() {
+		return section;
+	}
+	
+	/**
+	 * Ankunftsposition von Block
+	 */
+	int getStartPos() {
+		return this.start;
+	}
+	
+	/**
+	 * Endposition von Block
+	 */
+	int getEndPos() {
+		return this.end;
+	}
+
+	/**
+	 * @return next Block
+	 */
+	Block getNext() {
+		return next;
+	}
+
+	/**
+	 * zeiger auf den nächsten Block
+	 */
+	void setNext(Block next) {
+		this.next = next;
+	}
+	
+	/**
+	 * wenn der nextBlock vorhanden ist gebe true zurück ansonsten false
+	 * @return
+	 */
+	boolean hasNext() {
+		if(getNext() != null) {
+			return true;
+		}
+		return false;
+	}
 }
