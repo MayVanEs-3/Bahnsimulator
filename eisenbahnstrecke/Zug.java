@@ -7,7 +7,7 @@ public class Zug extends Thread {
 	 */
 	String name;
 	int speed; // km pro sekunde
-	int timeProKm; 	
+	int timeProKm;
 	int position;
 	Strecke route;
 	Block block;
@@ -18,17 +18,17 @@ public class Zug extends Thread {
 	Zug(String name, int speed) {
 		this.name = name;
 		this.speed = speed;
-		this.timeProKm = 1000/speed;
+		this.timeProKm = 1000 / speed;
 	}
-	
+
 	public Strecke getroute() {
 		return route;
 	}
-	
-	void setroute(Strecke s){
+
+	void setroute(Strecke s) {
 		route = s;
 	}
-	
+
 	public Block getBlock() {
 		return block;
 	}
@@ -57,21 +57,28 @@ public class Zug extends Thread {
 		this.position = position;
 	}
 
-	/**
-	 * Run Methode
-	 */
+	/*
 	public void run() {
 		while (route.getRouteLength() > position) {
 			position = position + speed;
 		}
 		if (getPosition() == getBlock().getend()) {
 			while (getBlock().hasNextBlockATrain().isUsed()) {
-				 getBlock().hasNextBlockATrain.timeProKm;
+				 getBlock().hasNextBlockATrain().sleep(timeProKm);
 				}
 			}
+		//setBlock(getBlock().move(this));
+	
+		System.out.println(getroute());
+		position++;
+		Thread.sleep(timeProKm);
+	
+		synchronized (getBlock()) {
+			getBlock().quit(this);
+			getBlock().notifyAll();
 		
-	}
-	
-	
+		}
 
+	}
+	*/
 }

@@ -38,7 +38,10 @@ public class Block {
 			setUnused();
 		}
 	}
-	/*
+	/**
+	 * !!!!!!!!!!!!!!!!!noch am lösen!!!! 
+	 * @param train
+	 */
 	void hasNextBlockATrain(Zug train){
 		 train.getBlock().setUnused();
 	}
@@ -46,14 +49,14 @@ public class Block {
 	void haslastBlockATrain(Zug train){
 		train.getBlock().setUsed();
 	}
-	*/
+	
 	/**
 	 * zug verlässt ein block, abfrage ob sich im vorletzten block sich ein Zug befindet
 	 * wenn ja soll der weiterfahren, ansonsten
 	 * return hat der näckste block ein zug
 	 */
 	/*
-	 Block move(Zug train) {
+	 synchronized Block move(Zug train) {
 		quit(train);
 		notifyAll();
 		haslastBlockATrain(train);
