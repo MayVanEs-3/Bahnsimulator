@@ -1,6 +1,10 @@
 package eisenbahnstrecke;
 
 import org.junit.Assert;
+
+import eisenbahnstrecke.Block;
+import eisenbahnstrecke.Strecke;
+
 import org.junit.*;
 
 public class StreckeTest extends Assert {
