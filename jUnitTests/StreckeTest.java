@@ -8,9 +8,8 @@ public class StreckeTest {
 
 	@Test
 	public void parameterMatchestest() {
-		Strecke eins = new Strecke(1);
-		System.out.println("Ergebnis ist: "+ eins.streckeInStrichen(1));
-	
+		Strecke eins = new Strecke(null);
+		eins.addTrain(train, 5);
 	
 	}
 

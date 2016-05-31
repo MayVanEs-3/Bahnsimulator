@@ -2,6 +2,9 @@ package eisenbahnstrecke;
 
 public class Zug extends Thread {
 
+	/**
+	 * Variablen deklaration
+	 */
 	String name;
 	int speed; // km pro sekunde
 	int timeProKm; 	
@@ -9,6 +12,9 @@ public class Zug extends Thread {
 	Strecke route;
 	Block block;
 
+	/**
+	 * Konstruktor
+	 */
 	Zug(String name, int speed) {
 		this.name = name;
 		this.speed = speed;
@@ -51,10 +57,18 @@ public class Zug extends Thread {
 		this.position = position;
 	}
 
+	/**
+	 * Run Methode
+	 */
 	public void run() {
-		while (route.getrouteLength() > position) {
+		while (route.getRouteLength() > position) {
 			position = position + speed;
 		}
+		if (getPosition() == getBlock().getend()) {
+			while (getBlock().hasNextBlockATrain().isUsed()) {
+				 getBlock().hasNextBlockATrain.timeProKm;
+				}
+			}
 		
 	}
 	

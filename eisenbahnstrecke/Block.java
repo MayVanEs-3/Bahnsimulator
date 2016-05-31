@@ -4,10 +4,11 @@ package eisenbahnstrecke;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class Block {
 	
+	/**
+	 * Variablen deklariert
+	 */
 	private boolean isUsed;
 	private int begin;
 	private int end;
@@ -16,43 +17,52 @@ public class Block {
 	
 
 	/**
-	 * Züge die sich auf den Block befinden
+	 * trainlist mit Zügen die sich in dem Block befinden
 	 */
 	List<Zug> trainList = new ArrayList<>();
 	
 	/**
-	 *train enters block, the signal setUsed appears, which stands for the Redlight
+	 *train betritt block, signal schlägt auf "Rot", hier setUsed
 	 */
-	void join(Zug zug){
-		trainList.add(zug);
+	void join(Zug train){
+		trainList.add(train);
 		setUsed();
 	}
 	
 	/**
-	 *train leaves block, the signal setUnused appears, which stands for the Greenlight
+	 *train verlässt block, signal schlägt auf "Grün", hier setUnused
 	 */
-	void quit(Zug zug){
-		trainList.remove(zug);
+	void quit(Zug train){
+		trainList.remove(train);
 		if(getTrainList().isEmpty()){
 			setUnused();
 		}
 	}
+	/*
 	void hasNextBlockATrain(Zug train){
 		 train.getBlock().setUnused();
 	}
 
-	void lastBlockATrain(Zug train){
+	void haslastBlockATrain(Zug train){
 		train.getBlock().setUsed();
 	}
-	
+	*/
+	/**
+	 * zug verlässt ein block, abfrage ob sich im vorletzten block sich ein Zug befindet
+	 * wenn ja soll der weiterfahren, ansonsten
+	 * return hat der näckste block ein zug
+	 */
+	/*
 	 Block move(Zug train) {
 		quit(train);
 		notifyAll();
-		hasNextBlockATrain(train);
+		haslastBlockATrain(train);
 		join(train);
-		return null;
+		return hasNextBlockATrain(train);
 	}
+	*/
 	/**
+	 * zug einnehmen in der liste
 	 */
 	public void add(Zug train) {
 		getTrainList().add(train);
@@ -62,35 +72,52 @@ public class Block {
 	public List<Zug> getTrainList() {
 		return trainList;
 	}
-
+	
+	/**
+	 * @param Konstruktor für die länge
+	 */
 	Block(int length){
 		this.length = length;
 	}
+	
 	/**
-	 * Red
+	 * Strecke wird benutzt, Ampel ist auf "Rot", gibt true zurück
 	 */
 	public void setUsed(){
 		isUsed = true;
 	}
+	
 	/**
-	 * Green
+	 * Strecke wird nicht mehr benutzt, Ampel ist auf "Grün", gibt true zurück
 	 */
 	public void setUnused(){
 		isUsed = false;
 	}
 	
+	/**
+	 * @return anfang des blockes
+	 */
 	public int getbegin(){
 		return begin;
 	}
 	
+	/**
+	 * @return ende des blockes
+	 */
 	public int getend(){
 		return end;
 	}
 	
+	/**
+	 * @return länge des Blockes
+	 */
 	public int getLength() {
 		return length;
 	}
-
+	
+	/**
+	 * @param train in die trainliste hinzufügen
+	 */
 	public void addTrain(Zug train) {
 		trainList.add(train);
 	}
