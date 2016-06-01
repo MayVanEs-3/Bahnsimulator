@@ -7,7 +7,7 @@ public class SimulationTest {
 				new Block(5), new Block(5) };
 		Strecke strecke = new Strecke(bloecke);
 		Zug a = new Zug('A', 5);
-		Zug b = new Zug('B', 15);
+		Zug b = new Zug('B', 15);     
 		Zug c = new Zug('C', 5);
 		Zug d = new Zug('D', 10);
 		Zug e = new Zug('E', 6);
@@ -28,3 +28,4 @@ public class SimulationTest {
 		new SimulationTest();
 	}
 }
+//
