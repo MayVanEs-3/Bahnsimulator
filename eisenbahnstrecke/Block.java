@@ -40,7 +40,6 @@ public class Block {
 		this.length = length;
 		this.positionOfSection = position;
 		this.section = section;
-		// define the range
 		this.start = getSection().getFirstPositionOf(this);
 		this.end = getSection().getLastPosition(this);
 	}
@@ -83,6 +82,8 @@ public class Block {
 	  * @return stellt Kollision dar zwichen zwei züge
 	  * wenn mehr als ein zug an der gleichen position ist dann 
 	  * zeige, dass sie Kollidieren
+	  * mit posInsect wird nachgeschaut wie viele züge sich an
+	  * dieser postion sich befinden
 	  * 
 	  */
 	String getTrainsAt(int posInSect) {

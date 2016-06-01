@@ -40,7 +40,7 @@ public class Zug extends Thread {
 						return;
 					}
 					
-					// wait until next block is free
+					// warte bis der näckste block frei ist
 					while (getBlock().getNext().isBlocked()) {
 						synchronized (getBlock().getNext()) {
 							getBlock().getNext().wait();
@@ -52,7 +52,7 @@ public class Zug extends Thread {
 				}
 				position++;
 				
-				// checks if there is a collision with a other train
+				// überprüfe ob ein zug mit einem anderen kollidiert
 				synchronized (getBlock()) {
 					checkCollision();
 				}
@@ -68,9 +68,9 @@ public class Zug extends Thread {
 	}
 	/**
 	 * strecke ist synchronized weil keiner Syso noch dazu benutzen kann
+	 * strecke wird (reserviert) und ausgegeben
 	 */
 	private void show() {
-		// strecke is synchronized because nobody can use the syso too
 		synchronized (getStrecke()) {
 			System.out.println(getStrecke());
 		}

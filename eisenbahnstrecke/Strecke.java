@@ -38,8 +38,8 @@ public class Strecke {
 	}
 
 	/**
-	 * anhand der position wird der block ausgegeben, welcher sich dann
-	 * an dieser stelle befindet
+	 * anhand der position wird der block zurückgegeben, welcher sich dann
+	 * an dieser stelle befindet, ansonsten null
 	 */
 	Block getBlockFromTrainPosition(int position) {
 		for(Block b : getBlocks()) {
@@ -97,7 +97,7 @@ public class Strecke {
 	
 	/**
 	 * summiert die längen bis zu einem gegebenen block.
-	 * @return
+	 * @return die positionen der Böcke
 	 */
 	private int sumPosition(int start, Block b) {
 		int sum = start;
@@ -110,6 +110,9 @@ public class Strecke {
 		return sum;
 	}
 
+	/**
+	 * blöcke formartiert zurückgegeben
+	 */
 	@Override
 	public synchronized String toString() {
 		String result = "";
